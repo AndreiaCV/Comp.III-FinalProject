@@ -12,7 +12,7 @@ class PowerUp(pygame.sprite.Sprite):
         self.effect_duration = effect_duration
         self.speed = speed
         self.screen_width = 800
-        self.rect.x = random.choice([60, 160, 260, 360])  # Set initial x position
+        self.rect.x = random.choice([200,300,400,500])  # Set initial x position
         self.powerup_type = powerup_type
         self.active = False
         self.activation_time = 0
@@ -46,7 +46,7 @@ class PowerUp(pygame.sprite.Sprite):
             self.reset_position()
     
     def reset_position(self):
-        self.rect.x = random.choice([60, 160, 260, 360])
+        self.rect.x = random.choice([200,300,400,500])
         self.rect.y = self.original_y
     
     def affect_player(self, player):
