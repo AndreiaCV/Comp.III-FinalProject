@@ -14,7 +14,7 @@ Install pygame
 
 Clone repository
 ```
-
+https://github.com/AndreiaCV/Comp.III-FinalProject.git
 ```
 Navigate to the project directory:
 
@@ -25,7 +25,7 @@ cd blitz-game
 To start the game run in the command pallet
 
 ```
-python blitz_game.py
+python main.py
 ```
 
 ##### Single Player
