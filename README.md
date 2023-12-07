@@ -1,4 +1,4 @@
-# Blitz - The Game
+# Blaze - The Game
 
 Blitz - The game is a simple but fun car racing game. Your goal is to achieve the longest ride possible without getting hit by oncoming vehicles. 
 Ready?
