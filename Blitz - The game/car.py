@@ -19,15 +19,15 @@ class Car(pygame.sprite.Sprite):
         self.player_number = 0
 
     def moveRight(self, pixels):
-            if self.inverted and self.rect.x > 40:
+            if self.inverted and self.rect.x > 200:
                 self.rect.x -= pixels
-            elif not self.inverted and self.rect.x < 385:
+            elif not self.inverted and self.rect.x < 550:
                 self.rect.x += pixels
 
     def moveLeft(self, pixels):
-            if self.inverted and self.rect.x < 385:
+            if self.inverted and self.rect.x < 550:
                 self.rect.x += pixels
-            elif not self.inverted and self.rect.x > 40:
+            elif not self.inverted and self.rect.x > 200:
                 self.rect.x -= pixels
 
     def moveForward(self):
