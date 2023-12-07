@@ -211,7 +211,7 @@ def car_racing(num_players, background, selected_cars):
                             print(f"Player Car {i+1} Rect: {playerCar.rect}")
                     if keys[pygame.K_UP]:
                         playerCar.moveBackward()
-                    if keys[pygame.K_DOWN]:
+                    if keys[pygame.K_DOWN] and playerCar.rect.y + playerCar.rect.height + 5 < SCREENHEIGHT:
                         playerCar.moveForward()
                     if keys[pygame.K_SPACE] and playerCar.shooting_enabled:
                         for power_up in power_ups:
@@ -225,7 +225,7 @@ def car_racing(num_players, background, selected_cars):
                             playerCar.moveRight(5)
                     if keys[pygame.K_w]:
                         playerCar.moveBackward()
-                    if keys[pygame.K_s]:
+                    if keys[pygame.K_s] and playerCar.rect.y + playerCar.rect.height + 5 < SCREENHEIGHT:
                         playerCar.moveForward()
                     if keys[pygame.K_SPACE] and playerCar.shooting_enabled:
                         for power_up in power_ups:
