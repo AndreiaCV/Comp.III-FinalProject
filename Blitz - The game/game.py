@@ -11,10 +11,12 @@ import math
 import sys
 
 BLACK = (0,0,0)
-GREEN = (20, 255, 140)
+GREEN = (22, 132, 10)
 GREY = (210, 210, 210)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+YELLOW = (255,247,0)
+
 
 SCREENWIDTH = 800
 SCREENHEIGHT = 600
@@ -137,7 +139,7 @@ def car_racing(num_players, background, selected_cars):
     player_cars = [Car(selected_cars[i], 70) for i in range(num_players)]
     
     for i, playerCar in enumerate(player_cars):
-        playerCar.rect.x = 160 + i * 100  # Adjust the initial x position for multiple players
+        playerCar.rect.x = 200 + i * 230  # Adjust the initial x position for multiple players
         playerCar.rect.y = SCREENHEIGHT - 100
         playerCar.player_number = i + 1  # Assign a unique player number
         all_sprites_list.add(playerCar)
@@ -145,7 +147,7 @@ def car_racing(num_players, background, selected_cars):
 
     for i in range(1, 5):
         car = Car(random.choice(car_images), random.uniform(50, 100))
-        car.initial_x = (i-1) * 100 + 60
+        car.initial_x = (i-1) * 100 + 230
         car.rect.y = i* (-200)
         all_sprites_list.add(car)
         all_coming_cars.add(car)
@@ -294,19 +296,23 @@ def car_racing(num_players, background, selected_cars):
         if background == "normal_background":
             # Draw background
             screen.fill(GREEN)
-            pygame.draw.rect(screen, GREY, [40, 0, 400, SCREENHEIGHT])
-            pygame.draw.line(screen, WHITE, [140, 0], [140, SCREENHEIGHT], 5)
-            pygame.draw.line(screen, WHITE, [240, 0], [240, SCREENHEIGHT], 5)
-            pygame.draw.line(screen, WHITE, [340, 0], [340, SCREENHEIGHT], 5)
+            pygame.draw.rect(screen, BLACK, [200, 0, 400, SCREENHEIGHT])
+            pygame.draw.line(screen, WHITE, [300, 0], [300, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, WHITE, [400, 0], [400, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, WHITE, [500, 0], [500, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, YELLOW,[215, 0], [215, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, YELLOW,[585, 0], [585, SCREENHEIGHT], 5)
 
         elif background == "snowy_background":
             back_image = pygame.image.load("images/snowy_grass.png")
             back_image = pygame.transform.scale(back_image, (SCREENWIDTH, SCREENHEIGHT))
             screen.blit(back_image, (0, 0))
-            pygame.draw.rect(screen, GREY, [40, 0, 400, SCREENHEIGHT])
-            pygame.draw.line(screen, WHITE, [140, 0], [140, SCREENHEIGHT], 5)
-            pygame.draw.line(screen, WHITE, [240, 0], [240, SCREENHEIGHT], 5)
-            pygame.draw.line(screen, WHITE, [340, 0], [340, SCREENHEIGHT], 5)
+            pygame.draw.rect(screen, BLACK, [200, 0, 400, SCREENHEIGHT])
+            pygame.draw.line(screen, WHITE, [300, 0], [300, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, WHITE, [400, 0], [400, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, WHITE, [500, 0], [500, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, YELLOW,[215, 0], [215, SCREENHEIGHT], 5)
+            pygame.draw.line(screen, YELLOW,[585, 0], [585, SCREENHEIGHT], 5)
 
             # Draw the wires
             small_wire1 = pygame.Rect(0, -55, 200, 100)  # (x, y, width, height)
