@@ -47,11 +47,8 @@ Be sure to get your bragging rights after you beat your friends.
 
   What: The other cars are slowing down! Hurry up and pass them all.
   Duration: 
-4. #### _Night Vision_
-
-   What: Oh no! The sun has set you can't see anything in front of you.
-   Duration
-5. #### _Upside Down_
+  
+4. #### _Upside Down_
 
    What: what's going on? I want to move right but i'm going left...
    Duration:
