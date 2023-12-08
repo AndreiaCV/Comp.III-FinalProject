@@ -2,14 +2,15 @@ import pygame
 from pygame.locals import *
 import sys
 
+#choose bachround function
 def choose_background():
     pygame.init()
-
+#define screen size (800x600)
     SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
     size = (SCREEN_WIDTH, SCREEN_HEIGHT)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Choose Background")
-
+    # Load and scale the background image for customization
     background = pygame.transform.scale(pygame.image.load("images/customization_new.png"), size)
 
     clock = pygame.time.Clock()
@@ -23,12 +24,13 @@ def choose_background():
 
     # Define the border color
     border_color = (238, 99, 99, 255)
-
+#load background images
     normal_background_image = pygame.transform.scale(pygame.image.load("images/normal_background.png"), (button_width, button_height))
     snowy_background_image = pygame.transform.scale(pygame.image.load("images/snow_background.png"), (button_width, button_height))
-
+#user input
     while carry_on:
         for event in pygame.event.get():
+            #quit event
             if event.type == QUIT:
                 carry_on = False
                 sys.exit()
