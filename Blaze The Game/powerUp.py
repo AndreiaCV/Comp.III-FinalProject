@@ -1,6 +1,7 @@
 import pygame
 import random
 
+#Power up parent class
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self, image, effect_duration, speed, powerup_type):
         super().__init__()
@@ -19,7 +20,7 @@ class PowerUp(pygame.sprite.Sprite):
         self.duration = effect_duration
         self.remaining_duration = effect_duration
         self.original_y = self.rect.y = self.get_initial_y()
-
+    #initial y coordinate based on type of powerup
     def get_initial_y(self):
         if self.powerup_type == 'slow':
             return -3000
@@ -29,7 +30,7 @@ class PowerUp(pygame.sprite.Sprite):
             return -5000
         elif self.powerup_type == 'invert':
             return -4000
-
+    # point added/taken for each powerup the user gets
     def get_points(self):
         if self.powerup_type == 'slow':
             return 1000
@@ -39,13 +40,13 @@ class PowerUp(pygame.sprite.Sprite):
             return 3000
         elif self.powerup_type == 'invert':
             return -1000
-            
+    #activate powerup
     def activate(self, player):
         self.active = True
         self.player = player
         self.activation_time = pygame.time.get_ticks()
         self.duration = self.effect_duration
-
+    #move powerup along the screen
     def move(self):
         # Define the movement behavior for power-ups here
         self.rect.y += self.speed / 20  # Adjust the movement speed based on car speed
@@ -54,9 +55,9 @@ class PowerUp(pygame.sprite.Sprite):
         # Respawn if the power-up goes off the screen
         if self.rect.y > self.screen_width:
             self.reset_position()
-    
+    #reset powerups position randomly
     def reset_position(self):
-        self.rect.x = random.choice([200, 300, 400, 500])
+        self.rect.x = random.choice([200, 300, 400, 500]) # x coordinates for powerup reset
         self.rect.y = self.original_y
     
     def affect_player(self, player):
