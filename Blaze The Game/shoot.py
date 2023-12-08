@@ -5,7 +5,7 @@ from car import *
 #shoot powerup class, inherits from PowerUp
 class ShootPowerUp(PowerUp):
     def __init__(self, speed):
-         """
+        """
         Initialize the ShootPowerUp object.
 
         Parameters:
@@ -41,18 +41,18 @@ class ShootPowerUp(PowerUp):
         - traffic: List of traffic objects.
         - images: Images used for the traffic/bullets.
         """
-            for bullet in self.bullets:
-                bullet.move()
-                for car in traffic:
-                    if isinstance(car, Car) and pygame.sprite.collide_rect(bullet, car):
-                        car.reset_position(images)  # Replace reset_position with the logic to set y=-200
-                        self.bullets.remove(bullet)
+        for bullet in self.bullets:
+            bullet.move()
+            for car in traffic:
+                if isinstance(car, Car) and pygame.sprite.collide_rect(bullet, car):
+                    car.reset_position(images)  # Replace reset_position with the logic to set y=-200
+                    self.bullets.remove(bullet)
 
             # Remove off-screen bullets
             self.bullets = [bullet for bullet in self.bullets if bullet.rect.y > 0]
     #shooting function
     def shoot(self, x, y):
-         """
+        """
         Shoot a bullet from the specified position.
 
         Parameters:
