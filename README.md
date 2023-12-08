@@ -56,6 +56,8 @@ Be sure to get your bragging rights after you beat your friends.
 
 #### Contributing
 Contributions are welcome! If you have any suggestions or find any issues, please open an issue or submit a pull request.
+Contributers : Isabel Liu -- 20221913@novaims.unl.pt
+               Madalena Brito -- madalenabritoeabreu@gmail.com
 
 
 ## License
