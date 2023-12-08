@@ -5,11 +5,11 @@ import random
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self, image, effect_duration, speed, powerup_type):
         super().__init__()
-        
+        #load and sclae powerup images
         self.image = pygame.image.load(image)
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.rect = self.image.get_rect()
-
+        #duration of the powerups
         self.effect_duration = effect_duration
         self.speed = speed
         self.screen_width = 800
