@@ -29,6 +29,19 @@ a_big, b_big = 150, 88
 
 #Game over function
 def game_over(screen, font, yes_button_image, no_button_image, player_scores):
+    """
+    Display the game over screen with player scores and prompt to continue.
+
+    Parameters:
+    - screen (pygame.Surface): The game screen.
+    - font (pygame.font.Font): The font for rendering text.
+    - yes_button_image (pygame.Surface): The image for the "yes" button.
+    - no_button_image (pygame.Surface): The image for the "no" button.
+    - player_scores (list): A list containing scores for each player.
+
+    Returns:
+    - str: The user's choice ("restart" or "menu").
+    """
     #Fill the screen with Black
     screen.fill(BLACK)
 # define Game over font and display text Game over in red
@@ -41,17 +54,17 @@ def game_over(screen, font, yes_button_image, no_button_image, player_scores):
 
         # Display player scores
     for i, score in enumerate(player_scores):
-        score_text = font.render(f"Player {i+1} Score: {score}", True, WHITE)
-        screen.blit(score_text, [SCREENWIDTH // 2 -200, SCREENHEIGHT // 2 - 50 + i * 40])
+        score_text = font.render(f"Player {i+1} Score: {score}", True, WHITE) #player number and score they got
+        screen.blit(score_text, [SCREENWIDTH // 2 -200, SCREENHEIGHT // 2 - 50 + i * 40]) # display the text 
 
 #Display continue prompt and buttons yes and no
     continue_prompt_text = font.render("Would you like to continue?", True, WHITE)
-    #Center the text in the screen
+    #display and center the text in the screen
     screen.blit(continue_prompt_text, (SCREENWIDTH // 2 - 200, SCREENHEIGHT // 2 + 30))
-
+    #location of the yes and no buttons on the screen
     yes_button_rect = yes_button_image.get_rect(center=(SCREENWIDTH // 2 - 70, SCREENHEIGHT // 2 + 100))
     no_button_rect = no_button_image.get_rect(center=(SCREENWIDTH // 2 + 70, SCREENHEIGHT // 2 + 100))
-
+    #display buttons
     screen.blit(yes_button_image, yes_button_rect)
     screen.blit(no_button_image, no_button_rect)
 
@@ -59,15 +72,16 @@ def game_over(screen, font, yes_button_image, no_button_image, player_scores):
 #user input
     while True:
         for event in pygame.event.get():
-            #quit game
+            #Check for quit event
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                #yes = restart game
+                #Check if buttons are pressed
+                #if user clicks yes game restarts
                 if yes_button_rect.collidepoint(event.pos):
                     return "restart"
-                #no = go back to main menu
+                #if user clicks no they go back to main menu
                 elif no_button_rect.collidepoint(event.pos):
                     return "menu"
 
@@ -80,7 +94,7 @@ def game_over(screen, font, yes_button_image, no_button_image, player_scores):
         #Scale images
         yes_button_image = pygame.transform.scale(yes_button_image, (100, 40))
         no_button_image = pygame.transform.scale(no_button_image, (100, 40))
-
+        #display buttons
         screen.blit(yes_button_image, yes_button_rect)
         screen.blit(no_button_image, no_button_rect)
 
@@ -88,6 +102,18 @@ def game_over(screen, font, yes_button_image, no_button_image, player_scores):
 
 #Pause function
 def pause(screen, font, restart_button_image, menu_button_image):
+    """
+    Display the pause screen with restart and menu buttons.
+
+    Parameters:
+    - screen (pygame.Surface): The game screen.
+    - font (pygame.font.Font): The font for rendering text.
+    - restart_button_image (pygame.Surface): The image for the "restart" button.
+    - menu_button_image (pygame.Surface): The image for the "menu" button.
+
+    Returns:
+    - str: The user's choice ("restart", "menu", or "unpause").
+    """
     paused_text = font.render("Paused", True, WHITE)
     #Create a semi-transparent overlay
     overlay = pygame.Surface((SCREENWIDTH, SCREENHEIGHT), pygame.SRCALPHA)
@@ -136,6 +162,17 @@ def pause(screen, font, restart_button_image, menu_button_image):
 
 #Game function
 def car_racing(num_players, background, selected_cars):
+    """
+    The main game loop.
+
+    Parameters:
+    - num_players (int): The number of players.
+    - background (str): The selected background.
+    - selected_cars (list): A list of filenames representing selected cars.
+
+    Returns:
+    - None
+    """
     pygame.init()
 
     # Load background music
