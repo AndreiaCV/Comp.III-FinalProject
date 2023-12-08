@@ -4,14 +4,15 @@ from game import *
 from customization import customize_cars
 from background import *
 
-
+#Create colours using RGB
 YELLOW = (255, 255, 0)
 
-
+#Load and scale images function
 def load_and_scale(image_path, rect):
     image = pygame.image.load(image_path)
     return pygame.transform.scale(image, (rect.width, rect.height))
-
+    
+#function to create buttons, loading and scalling the images
 def create_button(image_path, pressed_image_path, rect, action):
     normal_image = load_and_scale(image_path, rect)
     pressed_image = load_and_scale(pressed_image_path, rect)
@@ -21,7 +22,7 @@ def create_button(image_path, pressed_image_path, rect, action):
 def interface():
     # initiating pygames
     pygame.init()
-
+    #defining screen size (720x720) 
     res = (720, 720)
     screen = pygame.display.set_mode(res)
 
@@ -31,6 +32,7 @@ def interface():
     # Start playing background music
     pygame.mixer.music.play(-1)  # The -1 argument makes the music loop indefinitely
 
+    #creating the buttons
     buttons = [
         create_button('images/start.png', 'images/start_pressed.png', pygame.Rect(400, 300, 200, 60), lambda: start_game(1)),
         create_button('images/Multiplayer.png', 'images/multiplayer_pressed.png', pygame.Rect(130, 300, 250, 60), lambda: start_game(2)),
@@ -38,25 +40,28 @@ def interface():
         create_button('images/Credits.png', 'images/credits_pressed.png', pygame.Rect(130, 470, 200, 60), credits_),
         create_button('images/close.png', 'images/close.png', pygame.Rect(670, 20, 30, 30), sys.exit)
     ]
-    
+
+    #user input
     while True:
         mouse = pygame.mouse.get_pos()
         for ev in pygame.event.get():
+            #check quit event
             if ev.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            #check buttons clicked
             if ev.type == pygame.MOUSEBUTTONDOWN:
                 for button in buttons:
                     if button[2].collidepoint(mouse):
                         button[3]()
-
+        #display screen background
         screen.blit(pygame.image.load("images/ecra.png"), (0, 0))
         for button in buttons:
             image = button[1] if button[2].collidepoint(mouse) else button[0]
             screen.blit(image, button[2].topleft)
 
         pygame.display.update()
-
+#start game with specified number of player function
 def start_game(players):
     background = choose_background()
     selected_cars = customize_cars(players)
@@ -64,9 +69,11 @@ def start_game(players):
         car_racing(players, background, selected_cars)
 
 def credits_():
+    #define screen size (720x720)
     res = (720, 720)
     screen = pygame.display.set_mode(res)
     font = pygame.font.SysFont('Consolas', 25)
+    #text displayed on screen
     text_lines = [
         font.render('Andreia Vieira, 20221944@novaims.unl.pt', True, YELLOW),
         font.render('Isabel Liu, 20221913@novaims.unl.pt', True, YELLOW),
@@ -76,19 +83,22 @@ def credits_():
         font.render('and Liah Rosenfeld lrosenfeld@novaims.unl.pt', True, YELLOW),
         
     ]
+    #back button (pressed and unpressed)
     buttons = [create_button('images/back.png', 'images/back_pressed.png', pygame.Rect(450, 600, 200, 60), interface)]
-
+#user input
     while True:
         mouse = pygame.mouse.get_pos()
         for ev in pygame.event.get():
+            #check quit event
             if ev.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if ev.type == pygame.MOUSEBUTTONDOWN:
+                #check if back button was pressed
                 for button in buttons:
                     if button[2].collidepoint(mouse):
                         button[3]()
-
+        #display credits background
         screen.blit(pygame.image.load("images/credits_screen.png"), (0, 0))
         for i, text in enumerate(text_lines):
             screen.blit(text, (50, 300 + i * 25))
@@ -99,24 +109,30 @@ def credits_():
         pygame.display.update()
 
 def instructions_():
+    #check screen size (720x720)
     res = (720, 720)
     screen = pygame.display.set_mode(res)
+    #instructions backgrounds
     backgrounds = ['images/instruçoes0.png', 'images/instruçoes1.png', 'images/instruçoes2.png', 'images/instruçoes3.png']
+    #check what background it's displayed
     current_background_index = 0
     buttons = [create_button('images/back.png', 'images/back_pressed.png', pygame.Rect(450, 600, 200, 60), interface)]
 
-
+#user input
     while True:
         mouse = pygame.mouse.get_pos()
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
+                #check for quit event
                 pygame.quit()
                 sys.exit()
             elif ev.type == pygame.MOUSEBUTTONDOWN:
+                #check buttons clicked
                 for button in buttons:
                     if button[2].collidepoint(mouse):
                         button[3]()
             elif ev.type == pygame.KEYDOWN:
+                #change background according to user input
                 if ev.key == pygame.K_LEFT:
                     current_background_index = (current_background_index - 1) % len(backgrounds)
                 elif ev.key == pygame.K_RIGHT:
