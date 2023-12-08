@@ -4,6 +4,15 @@ import random
 #Power up parent class
 class PowerUp(pygame.sprite.Sprite):
     def __init__(self, image, effect_duration, speed, powerup_type):
+        """
+        Initialize the PowerUp object.
+
+        Parameters:
+        - image (str): Filename of the power-up image.
+        - effect_duration (int): Duration of the power-up effect in seconds.
+        - speed (float): Movement speed of the power-up.
+        - powerup_type (str): Type of the power-up (e.g., 'slow', 'invincibility', 'shoot', 'invert').
+        """
         super().__init__()
         #load and sclae powerup images
         self.image = pygame.image.load(image)
@@ -20,8 +29,9 @@ class PowerUp(pygame.sprite.Sprite):
         self.duration = effect_duration
         self.remaining_duration = effect_duration
         self.original_y = self.rect.y = self.get_initial_y()
-    #initial y coordinate based on type of powerup
+        
     def get_initial_y(self):
+        """Get the initial y-coordinate based on the type of power-up."""
         if self.powerup_type == 'slow':
             return -3000
         elif self.powerup_type == 'invincibility':
@@ -42,6 +52,12 @@ class PowerUp(pygame.sprite.Sprite):
             return -1000
     #activate powerup
     def activate(self, player):
+        """
+        Activate the power-up.
+
+        Parameters:
+        - player: The player affected by the power-up.
+        """
         self.active = True
         self.player = player
         self.activation_time = pygame.time.get_ticks()
