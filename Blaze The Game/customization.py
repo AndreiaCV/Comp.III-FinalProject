@@ -5,6 +5,15 @@ from game import *
 import sys
 
 def customize_cars(num_players):
+    """
+    Customize players car before starting the game.
+
+    Parameters:
+    - num_players (int): The number of players in the game.
+
+    Returns:
+    - list: A list of paths to the selected car images for each player.
+    """
     #Intializing pygame
     pygame.init()
 
