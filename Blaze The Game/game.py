@@ -59,12 +59,15 @@ def game_over(screen, font, yes_button_image, no_button_image, player_scores):
 #user input
     while True:
         for event in pygame.event.get():
+            #quit game
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                #yes = restart game
                 if yes_button_rect.collidepoint(event.pos):
                     return "restart"
+                #no = go back to main menu
                 elif no_button_rect.collidepoint(event.pos):
                     return "menu"
 
@@ -108,8 +111,10 @@ def pause(screen, font, restart_button_image, menu_button_image):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                #restart game
                 if restart_button_rect.collidepoint(event.pos):
                     return "restart"
+                #back to menu
                 elif menu_button_rect.collidepoint(event.pos):
                     return "menu"
                 else:
@@ -162,7 +167,7 @@ def car_racing(num_players, background, selected_cars):
         playerCar.player_number = i + 1  # Assign a unique player number
         all_sprites_list.add(playerCar)
         all_player_cars.add(playerCar)
-
+#Create incoming cars
     for i in range(1, 5):
         car = Car(random.choice(car_images), random.uniform(50, 100))
         car.initial_x = (i-1) * 100 + 230
@@ -177,7 +182,7 @@ def car_racing(num_players, background, selected_cars):
         ShootPowerUp(speed=random.uniform(50, 100)),
         InvertPowerUp(speed=random.uniform(50, 100)),
     ]
-
+    #Snow fall on the 2nd game screen
     snowFall = [[random.randrange(0, 800), random.randrange(0, 600)] for _ in range(200)]
 
     all_power_ups.add(power_ups)
@@ -193,17 +198,21 @@ def car_racing(num_players, background, selected_cars):
     
     carry_on = True
     clock = pygame.time.Clock()
+    #game starts unpaused
     paused = False
-
+#user input
     while carry_on:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 carry_on = False
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                #pause game
                 if pause_button_rect.collidepoint(event.pos):
                     paused = not paused
         if paused:
+            #paused game screen
+            #load button images and scale them
             restart_button_image = pygame.image.load('images/restart.png')
             restart_button_image = pygame.transform.scale(restart_button_image, (100, 40))
             menu_button_image = pygame.image.load('images/menu.png')
@@ -212,14 +221,14 @@ def car_racing(num_players, background, selected_cars):
 
             # Call pause function with necessary arguments
             pause_result = pause(screen, font, restart_button_image, menu_button_image)
-
+            # what happens when each button is pressed
             if pause_result == "restart":
                 car_racing(num_players, background, selected_cars)
             elif pause_result == "menu":
                 interface.interface()
             elif pause_result == "unpause":
                 paused = False
-            
+        #game movement
         else:
 
             keys = pygame.key.get_pressed()
@@ -231,8 +240,9 @@ def car_racing(num_players, background, selected_cars):
                             playerCar.moveRight(5)
                     if keys[pygame.K_UP]:
                         playerCar.moveBackward()
-                    if keys[pygame.K_DOWN] and playerCar.rect.y + playerCar.rect.height + 5 < SCREENHEIGHT:
+                    if keys[pygame.K_DOWN] and playerCar.rect.y + playerCar.rect.height + 5 < SCREENHEIGHT: #player can't go off screen (bottom)
                         playerCar.moveForward()
+                    #press space to shoot when poweredup
                     if keys[pygame.K_SPACE] and playerCar.shooting_enabled:
                         for power_up in power_ups:
                             if isinstance(power_up, ShootPowerUp):
@@ -257,80 +267,86 @@ def car_racing(num_players, background, selected_cars):
             for playerCar in player_cars:
                 player_scores[playerCar.player_number - 1] += elapsed_frames // 60
 
+        #update positions for oncoming cars
         for car in all_coming_cars:
             if isinstance(car, Car):    
-                car.rect.x = car.initial_x
-                car.moveForward()
+                car.rect.x = car.initial_x #reset the x coordinate
+                car.moveForward() 
+            #check if the car has moved beyond the screen
             if car.rect.y > SCREENHEIGHT:
                 car.reset_position(car_images)
-
+        #move powerup in the street
         for power_up in power_ups:
                 power_up.move()
 
-        # Check collisions for all player cars
+        # Check collisions between cars and powerups
         for playerCar in player_cars:
             powerup_collision_list = pygame.sprite.spritecollide(playerCar, all_power_ups, False)
             for collided_powerup in powerup_collision_list:
-                    if not collided_powerup.active:
+                    if not collided_powerup.active: #check powerup is not already active
                         collided_powerup.activate(playerCar)
                         collided_powerup.reset_position()
-                        player_scores[playerCar.player_number - 1] += collided_powerup.get_points()
+                        player_scores[playerCar.player_number - 1] += collided_powerup.get_points() #add point to player score
 
         # Now, outside the loop over player cars
         for power_up in all_power_ups:
             if isinstance(power_up, SlowingPowerUp) and power_up.active:
-                power_up.affect_traffic(all_coming_cars)
+                power_up.affect_traffic(all_coming_cars) #apply powerup to slow traffic
             elif isinstance(power_up, InvincibilityPowerUp) and power_up.active:    
-                power_up.affect_player()
+                power_up.affect_player() #apply powerup to user
             elif isinstance(power_up, ShootPowerUp) and power_up.active:
-                power_up.affect_player()
+                power_up.affect_player() 
                 power_up.affect_traffic(all_coming_cars, car_images)
             elif isinstance(power_up, InvertPowerUp) and power_up.active:
-                power_up.affect_player()
+                power_up.affect_player() 
 
         # Check if there is a car collision
         for playerCar in player_cars:
                 car_collision_list = pygame.sprite.spritecollide(playerCar, all_coming_cars, False)
                 for collided_car in car_collision_list:
-                    if playerCar != collided_car and not playerCar.invincible:
-                        all_sprites_list.remove(playerCar)
-                        all_player_cars.remove(playerCar)
+                    if playerCar != collided_car and not playerCar.invincible: #if user is not invicible remove them
+                        all_sprites_list.remove(playerCar) 
+                        all_player_cars.remove(playerCar) 
                         player_cars.remove(playerCar)
-                    elif  playerCar != collided_car and playerCar.invincible:
+                    elif  playerCar != collided_car and playerCar.invincible: #if user is invicible reset nonplayable car position
                         if isinstance(collided_car, Car):   
                             collided_car.reset_position(car_images)
-        
+        #if all users have lost
         if len(player_cars) == 0:
             # Load Yes and No button images
             font = pygame.font.SysFont('Consolas', 28)
-
+            #load buttons
             yes_button_image = pygame.image.load('images/yes.png')
             yes_button_image = pygame.transform.scale(yes_button_image, (100, 40))
 
             no_button_image = pygame.image.load('images/no.png')
             no_button_image = pygame.transform.scale(no_button_image, (100, 40))
-
+            #call game over function
             game_over_result = game_over(screen, font, yes_button_image, no_button_image, player_scores)
-
+            #check user input
             if game_over_result == "restart":
                 car_racing(num_players, background, selected_cars)
             elif game_over_result == "menu":
                 interface.interface()
-
+        #background 1
         if background == "normal_background":
             # Draw background
             screen.fill(GREEN)
+            #draw street and adjust where it is on screen
             pygame.draw.rect(screen, BLACK, [200, 0, 400, SCREENHEIGHT])
             pygame.draw.line(screen, WHITE, [300, 0], [300, SCREENHEIGHT], 5)
             pygame.draw.line(screen, WHITE, [400, 0], [400, SCREENHEIGHT], 5)
             pygame.draw.line(screen, WHITE, [500, 0], [500, SCREENHEIGHT], 5)
             pygame.draw.line(screen, YELLOW,[215, 0], [215, SCREENHEIGHT], 5)
             pygame.draw.line(screen, YELLOW,[585, 0], [585, SCREENHEIGHT], 5)
-
+            
+        #background 2
         elif background == "snowy_background":
+            #upload and scale background image
             back_image = pygame.image.load("images/snowy_grass.png")
             back_image = pygame.transform.scale(back_image, (SCREENWIDTH, SCREENHEIGHT))
             screen.blit(back_image, (0, 0))
+            #draw street
             pygame.draw.rect(screen, BLACK, [200, 0, 400, SCREENHEIGHT])
             pygame.draw.line(screen, WHITE, [300, 0], [300, SCREENHEIGHT], 5)
             pygame.draw.line(screen, WHITE, [400, 0], [400, SCREENHEIGHT], 5)
@@ -338,7 +354,7 @@ def car_racing(num_players, background, selected_cars):
             pygame.draw.line(screen, YELLOW,[215, 0], [215, SCREENHEIGHT], 5)
             pygame.draw.line(screen, YELLOW,[585, 0], [585, SCREENHEIGHT], 5)
 
-            # Draw the wires
+            # Draw the wires (christmas wires on top)
             small_wire1 = pygame.Rect(0, -55, 200, 100)  # (x, y, width, height)
             pygame.draw.ellipse(screen, BLACK, small_wire1, 2)  # (surface, color, rect, width)
             small_wire2 = pygame.Rect(500, -55, 200, 100)
@@ -358,12 +374,14 @@ def car_racing(num_players, background, selected_cars):
             num_balls_small_wire = 25
             num_balls_big_wire = 35
             for i in range(num_balls_small_wire):
+                #calculate polar coordinates
                 t = 2 * math.pi * i / num_balls_small_wire
+                #Convert polar coordinates to Cartesian coordinates for the small wire
                 x1 = int(100 + a_small * math.cos(t))
                 y1 = int(-4 + b_small * math.sin(t))
 
                 pygame.draw.circle(screen, color, (x1, y1), 5)
-
+            #same for the other wires
             for i in range(num_balls_big_wire):
                 t = 2 * math.pi * i / num_balls_big_wire
                 x2 = int(350 + a_big * math.cos(t))
@@ -382,7 +400,7 @@ def car_racing(num_players, background, selected_cars):
             for i in range(len(snowFall)):
                 pygame.draw.circle(screen, WHITE, snowFall[i], 3)
 
-                # Move the snowballs
+                # Move the snowflakes
                 snowFall[i][1] += 1
                 if snowFall[i][1] > 600:
                     y = random.randrange(-50, -10)
@@ -416,10 +434,13 @@ def car_racing(num_players, background, selected_cars):
             rect_height = 80 + len(active_power_ups) * 30
 
             pygame.draw.rect(screen, WHITE, [SCREENWIDTH - 180, playerCar.player_number * 200, 170, rect_height])  # Rectangle indicating active power-ups
+            # Set the font for displaying information about active power-ups and scores
             font = pygame.font.Font(None, 24)
+            # Display the player number
             player_text = font.render(f"Player {playerCar.player_number}:", True, BLACK)
             screen.blit(player_text, [SCREENWIDTH - 170, 10 + playerCar.player_number * 200])
-
+            
+            # Display information about each active power-up and its remaining duration
             for j, active_power_up in enumerate(active_power_ups):
                 power_up_text = font.render(active_power_up.powerup_type, True, BLACK)
                 timer_text = font.render(f"{active_power_up.remaining_duration} s", True, BLACK)
@@ -431,9 +452,9 @@ def car_racing(num_players, background, selected_cars):
             score_font = pygame.font.Font(None, 24)
             score_text = score_font.render(f"Score: {player_scores[playerCar.player_number - 1]}", True, BLACK)
             screen.blit(score_text, [SCREENWIDTH - 170, 60 + playerCar.player_number * 200 + len(active_power_ups) * 30])
-            
+        #update the display
         pygame.display.flip()
-
+        #control the frame rate, 60 frames per second
         clock.tick(60)
 
     pygame.quit()
