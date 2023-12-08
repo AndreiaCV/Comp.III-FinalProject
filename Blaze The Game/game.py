@@ -199,7 +199,7 @@ def car_racing(num_players, background, selected_cars):
     
     # Initialize and position player cars
     for i, playerCar in enumerate(player_cars):
-        playerCar.rect.x = 200 + i * 230  # Adjust the initial x position for multiple players
+        playerCar.rect.x = 325 + i * 100  # Adjust the initial x position for multiple players
         playerCar.rect.y = SCREENHEIGHT - 100
         playerCar.player_number = i + 1  # Assign a unique player number
         all_sprites_list.add(playerCar)
