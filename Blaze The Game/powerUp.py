@@ -30,6 +30,16 @@ class PowerUp(pygame.sprite.Sprite):
         elif self.powerup_type == 'invert':
             return -4000
 
+    def get_points(self):
+        if self.powerup_type == 'slow':
+            return 1000
+        elif self.powerup_type == 'invincibility':
+            return 2000
+        elif self.powerup_type == 'shoot':
+            return 3000
+        elif self.powerup_type == 'invert':
+            return -1000
+            
     def activate(self, player):
         self.active = True
         self.player = player
