@@ -40,8 +40,9 @@ class PowerUp(pygame.sprite.Sprite):
             return -5000
         elif self.powerup_type == 'invert':
             return -4000
-    # point added/taken for each powerup the user gets
     def get_points(self):
+         """Get the points added/taken for each power-up the user gets."""
+
         if self.powerup_type == 'slow':
             return 1000
         elif self.powerup_type == 'invincibility':
@@ -62,8 +63,9 @@ class PowerUp(pygame.sprite.Sprite):
         self.player = player
         self.activation_time = pygame.time.get_ticks()
         self.duration = self.effect_duration
-    #move powerup along the screen
     def move(self):
+        """Move the power-up along the screen and handle activation duration."""
+
         # Define the movement behavior for power-ups here
         self.rect.y += self.speed / 20  # Adjust the movement speed based on car speed
         if self.active:
@@ -71,13 +73,16 @@ class PowerUp(pygame.sprite.Sprite):
         # Respawn if the power-up goes off the screen
         if self.rect.y > self.screen_width:
             self.reset_position()
-    #reset powerups position randomly
     def reset_position(self):
+        """Reset the power-up position to a random location."""
+
         self.rect.x = random.choice([200, 300, 400, 500]) # x coordinates for powerup reset
         self.rect.y = self.original_y
     
     def affect_player(self, player):
+        """How it affects the player"""
         pass  # To be implemented in child classes
 
     def affect_traffic(self, traffic):
+        """How it affects the traffic"""
         pass  # To be implemented in child classes
