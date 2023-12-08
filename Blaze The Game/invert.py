@@ -32,7 +32,7 @@ class InvertPowerUp(PowerUp):
                     self.player.revert_commands()
     def affect_traffic(self, traffic):
         """
-        Does not affect traffic.
+        Placeholder for the traffic affect. Does not affect traffic.
 
         Parameters:
         - traffic: List of traffic objects.
