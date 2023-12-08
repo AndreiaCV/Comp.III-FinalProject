@@ -41,7 +41,7 @@ class PowerUp(pygame.sprite.Sprite):
         elif self.powerup_type == 'invert':
             return -4000
     def get_points(self):
-         """Get the points added/taken for each power-up the user gets."""
+        """Get the points added/taken for each power-up the user gets."""
 
         if self.powerup_type == 'slow':
             return 1000
