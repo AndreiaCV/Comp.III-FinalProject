@@ -33,8 +33,8 @@ def choose_background():
     # Define the border color
     border_color = (238, 99, 99, 255)
     #load background images
-    normal_background_image = pygame.transform.scale(pygame.image.load("images/normal_background.png"), (button_width, button_height))
-    snowy_background_image = pygame.transform.scale(pygame.image.load("images/snow_background.png"), (button_width, button_height))
+    normal_background_image = pygame.transform.scale(pygame.image.load("images/normalbackground.png"), (button_width, button_height))
+    snowy_background_image = pygame.transform.scale(pygame.image.load("images/snowybackground.png"), (button_width, button_height))
     #user input
     while carry_on:
         for event in pygame.event.get():
