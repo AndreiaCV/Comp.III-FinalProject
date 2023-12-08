@@ -25,7 +25,7 @@ a_small, b_small= 100, 50
 
 a_big, b_big = 150, 88
 
-def game_over(screen, font, yes_button_image, no_button_image):
+def game_over(screen, font, yes_button_image, no_button_image, player_scores):
     screen.fill(BLACK)
 
     game_over_font = pygame.font.Font('images/game_over.ttf', 280)
@@ -33,6 +33,12 @@ def game_over(screen, font, yes_button_image, no_button_image):
 
     text_rect = game_over_text.get_rect(center=(SCREENWIDTH // 2, SCREENHEIGHT // 5))
     screen.blit(game_over_text, text_rect)
+
+        # Display player scores
+    for i, score in enumerate(player_scores):
+        score_text = font.render(f"Player {i+1} Score: {score}", True, WHITE)
+        screen.blit(score_text, [SCREENWIDTH // 2 -200, SCREENHEIGHT // 2 - 50 + i * 40])
+
 
     continue_prompt_text = font.render("Would you like to continue?", True, WHITE)
     screen.blit(continue_prompt_text, (SCREENWIDTH // 2 - 200, SCREENHEIGHT // 2 + 30))
@@ -170,6 +176,9 @@ def car_racing(num_players, background, selected_cars):
     #image position
     pause_button_rect = pause_button_image.get_rect(topright=(SCREENWIDTH-10, 10))
 
+    elapsed_frames = 0
+    player_scores = [0] * num_players
+    
     carry_on = True
     clock = pygame.time.Clock()
     paused = False
@@ -208,7 +217,6 @@ def car_racing(num_players, background, selected_cars):
                             playerCar.moveLeft(5)
                     if keys[pygame.K_RIGHT]:
                             playerCar.moveRight(5)
-                            print(f"Player Car {i+1} Rect: {playerCar.rect}")
                     if keys[pygame.K_UP]:
                         playerCar.moveBackward()
                     if keys[pygame.K_DOWN] and playerCar.rect.y + playerCar.rect.height + 5 < SCREENHEIGHT:
@@ -232,6 +240,11 @@ def car_racing(num_players, background, selected_cars):
                             if isinstance(power_up, ShootPowerUp):
                                 power_up.shoot(playerCar.rect.x + 26, playerCar.rect.y)
 
+        # Update elapsed frames and accumulate points
+            elapsed_frames += 1
+            for playerCar in player_cars:
+                player_scores[playerCar.player_number - 1] += elapsed_frames // 60
+
         for car in all_coming_cars:
             if isinstance(car, Car):    
                 car.rect.x = car.initial_x
@@ -249,6 +262,7 @@ def car_racing(num_players, background, selected_cars):
                     if not collided_powerup.active:
                         collided_powerup.activate(playerCar)
                         collided_powerup.reset_position()
+                        player_scores[playerCar.player_number - 1] += collided_powerup.get_points()
 
         # Now, outside the loop over player cars
         for power_up in all_power_ups:
@@ -265,10 +279,8 @@ def car_racing(num_players, background, selected_cars):
         # Check if there is a car collision
         for playerCar in player_cars:
                 car_collision_list = pygame.sprite.spritecollide(playerCar, all_coming_cars, False)
-                print(f"Player Car {playerCar.player_number} Collision List: {car_collision_list}")
                 for collided_car in car_collision_list:
                     if playerCar != collided_car and not playerCar.invincible:
-                        print(f"Player {playerCar.player_number} car crash!")
                         all_sprites_list.remove(playerCar)
                         all_player_cars.remove(playerCar)
                         player_cars.remove(playerCar)
@@ -286,7 +298,7 @@ def car_racing(num_players, background, selected_cars):
             no_button_image = pygame.image.load('images/no.png')
             no_button_image = pygame.transform.scale(no_button_image, (100, 40))
 
-            game_over_result = game_over(screen, font, yes_button_image, no_button_image)
+            game_over_result = game_over(screen, font, yes_button_image, no_button_image, player_scores)
 
             if game_over_result == "restart":
                 car_racing(num_players, background, selected_cars)
@@ -380,25 +392,34 @@ def car_racing(num_players, background, selected_cars):
         # Draw the pause button image
         screen.blit(pause_button_image, pause_button_rect)
 
-        # Draw active power-ups and their timers
+        # Draw active power-ups, their timers, and player scores
+        for playerCar in player_cars:
+            active_power_ups = [power_up for power_up in all_power_ups if power_up.active and power_up.player == playerCar]
+
+            # Draw active power-ups, their timers, and player scores
         for playerCar in player_cars:
             active_power_ups = [power_up for power_up in all_power_ups if power_up.active and power_up.player == playerCar]
 
             # Calculate the height of the rectangle based on the number of active power-ups
-            rect_height = 50 + len(active_power_ups) * 30
+            rect_height = 80 + len(active_power_ups) * 30
 
-            pygame.draw.rect(screen, WHITE, [SCREENWIDTH - 180, 50 + playerCar.player_number * 140, 170, rect_height])  # Rectangle indicating active power-ups
+            pygame.draw.rect(screen, WHITE, [SCREENWIDTH - 180, playerCar.player_number * 200, 170, rect_height])  # Rectangle indicating active power-ups
             font = pygame.font.Font(None, 24)
             player_text = font.render(f"Player {playerCar.player_number}:", True, BLACK)
-            screen.blit(player_text, [SCREENWIDTH - 170, 60 + playerCar.player_number * 140])
+            screen.blit(player_text, [SCREENWIDTH - 170, 10 + playerCar.player_number * 200])
 
             for j, active_power_up in enumerate(active_power_ups):
                 power_up_text = font.render(active_power_up.powerup_type, True, BLACK)
                 timer_text = font.render(f"{active_power_up.remaining_duration} s", True, BLACK)
 
-                screen.blit(power_up_text, [SCREENWIDTH - 170, 90 + playerCar.player_number * 140 + j * 30])
-                screen.blit(timer_text, [SCREENWIDTH - 80, 90 + playerCar.player_number * 140 + j * 30])
+                screen.blit(power_up_text, [SCREENWIDTH - 170, 60 + playerCar.player_number * 200 + j * 30])
+                screen.blit(timer_text, [SCREENWIDTH - 80, 60 + playerCar.player_number * 200 + j * 30])
 
+            # Display player's score
+            score_font = pygame.font.Font(None, 24)
+            score_text = score_font.render(f"Score: {player_scores[playerCar.player_number - 1]}", True, BLACK)
+            screen.blit(score_text, [SCREENWIDTH - 170, 60 + playerCar.player_number * 200 + len(active_power_ups) * 30])
+            
         pygame.display.flip()
 
         clock.tick(60)
