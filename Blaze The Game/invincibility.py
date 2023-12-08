@@ -33,10 +33,10 @@ class InvincibilityPowerUp(PowerUp):
                 if isinstance(self.player, Car):
                     self.player.deactivate_invincibility()
     def affect_traffic(self, traffic):
-         """
-        Placeholder for the traffic affect.Does not affect traffic.
+        """
+            Placeholder for the traffic affect.Does not affect traffic.
 
-        Parameters:
-        - traffic: List of traffic objects.
+            Parameters:
+            - traffic: List of traffic objects.
         """
         pass
