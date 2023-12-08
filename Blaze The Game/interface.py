@@ -7,19 +7,22 @@ from background import *
 #Create colours using RGB
 YELLOW = (255, 255, 0)
 
-#Load and scale images function
 def load_and_scale(image_path, rect):
+    """Load and scale an image"""
     image = pygame.image.load(image_path)
     return pygame.transform.scale(image, (rect.width, rect.height))
     
 #function to create buttons, loading and scalling the images
 def create_button(image_path, pressed_image_path, rect, action):
+    """Create buttons when mouse is over them and when its not."""
+
     normal_image = load_and_scale(image_path, rect)
     pressed_image = load_and_scale(pressed_image_path, rect)
     return normal_image, pressed_image, rect, action
 
 # Creating a function that creates the GUI
 def interface():
+    """Create the game interface."""
     # initiating pygames
     pygame.init()
     #defining screen size (720x720) 
@@ -61,14 +64,15 @@ def interface():
             screen.blit(image, button[2].topleft)
 
         pygame.display.update()
-#start game with specified number of player function
 def start_game(players):
+    """Start the game with the specified number of players."""
     background = choose_background()
     selected_cars = customize_cars(players)
     if selected_cars and background:
         car_racing(players, background, selected_cars)
 
 def credits_():
+    """Display the credits screen."""
     #define screen size (720x720)
     res = (720, 720)
     screen = pygame.display.set_mode(res)
@@ -109,6 +113,7 @@ def credits_():
         pygame.display.update()
 
 def instructions_():
+    """Display the instructions screen."""
     #check screen size (720x720)
     res = (720, 720)
     screen = pygame.display.set_mode(res)
