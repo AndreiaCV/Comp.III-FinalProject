@@ -2,6 +2,7 @@ import pygame
 from powerUp import PowerUp
 from car import *
 
+#shoot powerup
 class ShootPowerUp(PowerUp):
     def __init__(self, speed):
         super().__init__('images/gun.png', effect_duration=20000, speed=speed, powerup_type='shoot')
@@ -9,7 +10,7 @@ class ShootPowerUp(PowerUp):
         self.bullet_speed = 7
         self.elapsed_time = 0
         
-
+    #affects player for a given amount of time
     def affect_player(self):
         if self.active and self.player:  
             current_time = pygame.time.get_ticks()
@@ -24,7 +25,7 @@ class ShootPowerUp(PowerUp):
                     self.player.disable_shooting()
                     # Clean up bullets when power-up deactivates
                     self.bullets = []
-
+    #affects traffic
     def affect_traffic(self, traffic, images):
             for bullet in self.bullets:
                 bullet.move()
@@ -35,7 +36,7 @@ class ShootPowerUp(PowerUp):
 
             # Remove off-screen bullets
             self.bullets = [bullet for bullet in self.bullets if bullet.rect.y > 0]
-
+    #shooting function
     def shoot(self, x, y):
         bullet = Bullet(x, y, self.bullet_speed)
         self.bullets.append(bullet)
