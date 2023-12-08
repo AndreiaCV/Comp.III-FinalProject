@@ -49,10 +49,10 @@ class Car(pygame.sprite.Sprite):
         Parameters:
         - pixels (int): The number of pixels the cars move to move the car to the right.
         """
-            if self.inverted and self.rect.x > 200: # Check if the car is inverted and adjust movement accordingly
-                self.rect.x -= pixels
-            elif not self.inverted and self.rect.x < 550:
-                self.rect.x += pixels
+        if self.inverted and self.rect.x > 200: # Check if the car is inverted and adjust movement accordingly
+            self.rect.x -= pixels
+        elif not self.inverted and self.rect.x < 550:
+            self.rect.x += pixels
 #move left function 
     def moveLeft(self, pixels):
         """
@@ -61,16 +61,17 @@ class Car(pygame.sprite.Sprite):
         Parameters:
         - pixels (int): The number of pixels the cars move to move the car to the left.
         """
-            if self.inverted and self.rect.x < 550: # Check if the car is inverted and adjust movement accordingly
-                self.rect.x += pixels
-            elif not self.inverted and self.rect.x > 200:
-                self.rect.x -= pixels
+        if self.inverted and self.rect.x < 550: # Check if the car is inverted and adjust movement accordingly
+            self.rect.x += pixels
+        elif not self.inverted and self.rect.x > 200:
+            self.rect.x -= pixels
 #move forward function
     def moveForward(self):
-                """Move the car forward.
-                Adjusting its y-coordinate based on its speed
-                """
-        self.rect.y += self.speed / 25 # Adjust y coordinate based on speed
+        """Move the car forward.
+        Adjusting its y-coordinate based on its speed
+        """
+        self.rect.y += self.speed / 25  # Adjust y coordinate based on speed
+
 
 #move backwars function
     def moveBackward(self):
