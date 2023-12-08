@@ -4,15 +4,15 @@ from car import Car
 import random
 
 SCREENHEIGHT = 600
-
+#slow traffic powerup
 class SlowingPowerUp(PowerUp):
     def __init__(self, speed):
         super().__init__('images/snail.png', effect_duration=5000, speed=speed, powerup_type='slow')
         self.elapsed_time = 0
-        
+    #doesn't affect player
     def affect_player(self, player):
         pass 
-    
+    #affects oncoming cars velocity for a set amount of tima
     def affect_traffic(self, traffic):
         if self.active:
             current_time = pygame.time.get_ticks()
